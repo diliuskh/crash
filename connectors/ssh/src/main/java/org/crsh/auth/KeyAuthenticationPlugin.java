@@ -91,12 +91,13 @@ public class KeyAuthenticationPlugin extends CRaSHPlugin<KeyAuthenticationPlugin
   }
 
   public AuthInfo authenticate(String username, PublicKey credential) throws Exception {
-    if (authorizedKeys.contains(credential)) {
-      log.log(Level.FINE, "Authenticated " + username + " with public key " + credential);
-      return AuthInfo.SUCCESSFUL;
-    } else {
-      log.log(Level.FINE, "Denied " + username + " with public key " + credential);
-      return AuthInfo.UNSUCCESSFUL;
+    for (PublicKey authorizedKey : authorizedKeys) {
+      if (authorizedKey.equals(credential)) {
+        log.log(Level.FINE, "Authenticated " + username + " with public key " + credential);
+        return AuthInfo.SUCCESSFUL;
+      }
     }
+    log.log(Level.FINE, "Denied " + username + " with public key " + credential);
+    return AuthInfo.UNSUCCESSFUL;
   }
 }

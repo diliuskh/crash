@@ -33,8 +33,11 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Stack;
 import java.util.concurrent.CountDownLatch;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JLineProcessor implements Runnable, ConsoleDriver {
+  private final static Logger LOG = Logger.getLogger(JLineProcessor.class.getName());
 
   /** . */
   private final Console console;
@@ -203,11 +206,11 @@ public class JLineProcessor implements Runnable, ConsoleDriver {
           //
           console.on(operation, buffer);
         } else {
-          System.out.println("No operation: " + o);
+          LOG.log(Level.FINE, "No operation: " + o);
         }
       }
       catch (IOException e) {
-        e.printStackTrace();
+        LOG.log(Level.FINE, "Error during execution", e);
         return;
       }
     }
